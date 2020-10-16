@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{7E04BDB0-4A82-D2F8-5B42-A8AC573F66CB}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "DreamPlace",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
