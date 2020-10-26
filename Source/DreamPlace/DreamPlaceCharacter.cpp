@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "DreamPlacePlayerState.h"
 #include "Bullet.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -192,3 +193,12 @@ void ADreamPlaceCharacter::Fire()
 	}
 }
 
+void ADreamPlaceCharacter::AddScore()
+{
+	GetPlayerState()->SetScore(GetPlayerState()->GetScore() + 1);
+}
+
+int ADreamPlaceCharacter::GetScore()
+{
+	return (int)GetPlayerState()->GetScore();
+}
