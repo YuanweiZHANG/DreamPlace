@@ -68,6 +68,25 @@ protected:
 	/** Stop Shooting */
 	void StopShooting();
 
+	/** Fire */
+	UFUNCTION()
+	void Fire();
+
+	/** Add scores */
+	void AddScore();
+
+	/** Get scores */
+	UFUNCTION(BlueprintCallable, Category = Gameplay)
+	int GetScore();
+
+	/** Muzzle offset, initialized by camera position */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	FVector MuzzleOffset;
+
+	/** Projectile class */
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class ABullet> ProjectileClass;
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

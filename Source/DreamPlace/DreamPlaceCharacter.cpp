@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Bullet.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ADreamPlaceCharacter
@@ -71,6 +72,9 @@ void ADreamPlaceCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	// Shoot
 	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &ADreamPlaceCharacter::Shoot);
 	PlayerInputComponent->BindAction("Shoot", IE_Released, this, &ADreamPlaceCharacter::StopShooting);
+
+	// Fire
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ADreamPlaceCharacter::Fire);
 
 	// handle touch devices
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &ADreamPlaceCharacter::TouchStarted);
@@ -145,5 +149,46 @@ void ADreamPlaceCharacter::Shoot()
 void ADreamPlaceCharacter::StopShooting()
 {
 	IsInShooting = false;
+}
+
+void ADreamPlaceCharacter::Fire()
+{
+	if (ProjectileClass)
+	{
+		// Get camera position
+		FVector CharacterLocation;
+		FRotator CharacterRotation;
+		
+		//USkeletalMeshComponent *GunMeshComponent = GetMesh();
+		//GunMeshComponent->GetSocketWorldLocationAndRotation(TEXT("gun_Socket"), CharacterLocation, CharacterRotation);
+		
+		CharacterLocation = GetActorLocation();
+		// Adjuct to the gun's location
+		CharacterLocation += FVector(0.0f, 0.0f, 65.0f);
+		CharacterRotation = GetActorRotation();
+		//GetActorEyesViewPoint(CameraLocation, CameraRotation);
+
+		// Change muzzle offset from camera space to world space
+		FVector MuzzleLocation = CharacterLocation + FTransform(CharacterRotation).TransformVector(MuzzleOffset);
+		FRotator MuzzleRotation = CharacterRotation;
+
+		MuzzleRotation.Pitch += 0.0f;
+		UWorld* World = GetWorld();
+
+		if (World)
+		{
+			FActorSpawnParameters SpawnParams;
+			SpawnParams.Owner = this;
+			SpawnParams.Instigator = GetInstigator(); // Instigater is private
+			// Generate the bullet
+			ABullet* Bullet = World->SpawnActor<ABullet>(ProjectileClass, MuzzleLocation, MuzzleRotation, SpawnParams);
+			if (Bullet)
+			{
+				// Set bullet's initial direction
+				FVector LaunchDirection = MuzzleRotation.Vector();
+				Bullet->FireInDirection(LaunchDirection);
+			}
+		}
+	}
 }
 
