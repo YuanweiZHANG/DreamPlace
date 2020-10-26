@@ -29,6 +29,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
+	/** Whether character is in shooting. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Character)
+	bool IsInShooting;
+
 protected:
 
 	/** Resets HMD orientation in VR. */
@@ -57,6 +61,12 @@ protected:
 
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
+
+	/** Shoot */
+	void Shoot();
+
+	/** Stop Shooting */
+	void StopShooting();
 
 protected:
 	// APawn interface

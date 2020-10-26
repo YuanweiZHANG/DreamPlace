@@ -68,6 +68,10 @@ void ADreamPlaceCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ADreamPlaceCharacter::LookUpAtRate);
 
+	// Shoot
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &ADreamPlaceCharacter::Shoot);
+	PlayerInputComponent->BindAction("Shoot", IE_Released, this, &ADreamPlaceCharacter::StopShooting);
+
 	// handle touch devices
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &ADreamPlaceCharacter::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &ADreamPlaceCharacter::TouchStopped);
@@ -132,3 +136,14 @@ void ADreamPlaceCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
+
+void ADreamPlaceCharacter::Shoot()
+{
+	IsInShooting = true;
+}
+
+void ADreamPlaceCharacter::StopShooting()
+{
+	IsInShooting = false;
+}
+
